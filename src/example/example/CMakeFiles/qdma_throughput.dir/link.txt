@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/qdma_throughput.dir/qdma_throughput.cpp.o CMakeFiles/qdma_throughput.dir/dma/dma.cpp.o -o qdma_throughput  -Wl,-rpath,/home/amax/hhj/rc4ml_qdma/example ../libqdma.so -lpthread 

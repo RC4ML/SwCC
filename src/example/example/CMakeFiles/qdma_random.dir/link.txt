@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/qdma_random.dir/qdma_random.cpp.o CMakeFiles/qdma_random.dir/dma/dma.cpp.o -o qdma_random  -Wl,-rpath,/home/amax/hhj/rc4ml_qdma/example ../libqdma.so -lpthread 

@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/send.dir/send.cpp.o -o send  -Wl,-rpath,/home/amax/hhj/rc4ml_qdma/example ../libqdma.so -lpthread 
