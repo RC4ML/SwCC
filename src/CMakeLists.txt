@@ -29,7 +29,7 @@ if (${COMPILE_CUDA})
 	set_target_properties(qdma PROPERTIES CUDA_ARCHITECTURES "80")
 	target_link_libraries(qdma PRIVATE gdrapi cuda cudart)
 else ()
-	target_compile_options(qdma PRIVATE -O3 -fPIC -mavx512f)
+	target_compile_options(qdma PRIVATE -O3 -fPIC -mavx512f -no-pie)
 endif ()
 
 add_subdirectory(example)
