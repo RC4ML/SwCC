@@ -28,9 +28,15 @@ uint32_t swap_endian(uint32_t val) {
     return (val << 24) | ((val << 8) & 0x00FF0000) | ((val >> 8) & 0x0000FF00) | (val >> 24);
 }
 
-int main() {
+int main(int argc, char *argv[]) {
 
-    int pci_bus = 0x40;
+    if (argc != 2) {
+        std::cerr << "Usage: sudo " << argv[0] << " PacketSize" << std::endl;
+        return 1;
+    }
+    int length = std::atoi(argv[1]); // 将字符串转换为整数
+
+    int pci_bus = 0x1a;
     FPGACtl::explictInit(pci_bus, 4 * 1024 * 1024);
     auto fpga_ctl = FPGACtl::getInstance(pci_bus);
 
@@ -56,20 +62,22 @@ int main() {
 
 
 
-    int qpn = 1;
-    int remote_ip = 0x03bda8c0;
-    int remote_mac = 0x039d;
-    int ip = 0x02bda8c0;
+    int qpn = 2;
+    int remote_qpn = 1;
+    int remote_ip = 0x08bda8c0;
+    int remote_mac = 0x089d;
+    int ip = 0x03bda8c0;
     int credit = 0;
     int rate = 11500;
     int devide_rate = 356;
     int cpu_start = 1;
-    int length = 64 ;
+    // int length = 2048;
     int qpn_num = 1;
-    int msg_num_per_qpn = 1000;
+    int msg_num_per_qpn = 10000;
     int tx_delay = 11;
     int alfa = 0x10000;
-    uint64_t remote_vaddr;
+    uint64_t remote_vaddr = 0;
+    int x;
 
 
     for(int i=0;i<1024*1024*512/4;i++){
@@ -82,20 +90,20 @@ int main() {
 
 
     fpga_ctl->writeReg(110, qpn);
-    fpga_ctl->writeReg(111, qpn);
+    fpga_ctl->writeReg(111, remote_qpn);
     fpga_ctl->writeReg(112, remote_ip);
     fpga_ctl->writeReg(113, credit);
     fpga_ctl->writeReg(114, rate);
     fpga_ctl->writeReg(115, devide_rate);
     fpga_ctl->writeReg(116, remote_ip);
     fpga_ctl->writeReg(117, 0x02350a00);
-    fpga_ctl->writeReg(118, remote_mac);
+    fpga_ctl->writeReg(118, remote_mac);    
     fpga_ctl->writeReg(120, ip);
     fpga_ctl->writeReg(121, cpu_start);
     fpga_ctl->writeReg(122, tx_delay);
     fpga_ctl->writeReg(123, (uint32_t) ((uint64_t) p >> 32));
     fpga_ctl->writeReg(124, (uint32_t) ((uint64_t) p));
-    fpga_ctl->writeReg(125, qpn_num*msg_num_per_qpn);
+    fpga_ctl->writeReg(125, qpn_num*msg_num_per_qpn);    
 
     fpga_ctl->writeReg(160, rate); 
     fpga_ctl->writeReg(161, 0); 
@@ -108,10 +116,13 @@ int main() {
     fpga_ctl->writeReg(169, alfa);
 
     cpu_start = 0;
-    std::cout << (uint64_t) p << std::endl;
+    std::cout << "After both the sender and receiver programs are started, enter any value to launch the receiver: " << std::endl;
 
-    std::cin >> remote_vaddr;
-    std::cout << remote_vaddr << std::endl;
+
+
+    std::cin >> x;
+
+    
 
     fpga_ctl->writeReg(121, cpu_start);
 
@@ -120,6 +131,24 @@ int main() {
     fpga_ctl->writeReg(101, 1);
     sleep(1);
     fpga_ctl->writeReg(101, 0);
+
+    // qpn = 2;
+    // remote_ip = 0x08bda8c0;
+    // remote_mac = 0x089d;
+    // fpga_ctl->writeReg(110, qpn);
+    // fpga_ctl->writeReg(111, remote_qpn);
+    // fpga_ctl->writeReg(112, remote_ip);
+    // fpga_ctl->writeReg(113, credit);
+    // fpga_ctl->writeReg(114, rate);
+    // fpga_ctl->writeReg(115, devide_rate);
+    // fpga_ctl->writeReg(116, remote_ip);
+    // fpga_ctl->writeReg(117, 0x02350a00);
+    // fpga_ctl->writeReg(118, remote_mac); 
+
+    // sleep(1);
+    // fpga_ctl->writeReg(101, 1);
+    // sleep(1);
+    // fpga_ctl->writeReg(101, 0);
 
     fpga_ctl->writeReg(131, qpn_num);
     fpga_ctl->writeReg(132, 1);//write
@@ -131,58 +160,28 @@ int main() {
     fpga_ctl->writeReg(136, (uint32_t) ((uint64_t) remote_vaddr));
     fpga_ctl->writeReg(140, length*qpn_num*msg_num_per_qpn/64);
 
-    sleep(1);
-    fpga_ctl->writeReg(130, 0);
-    sleep(1);
-    fpga_ctl->writeReg(150, 1);    // 正式读写数据之前打开
-    usleep(10);
-    fpga_ctl->writeReg(130, 1);
-    sleep(1);
-    fpga_ctl->writeReg(150, 0);
-    fpga_ctl->writeReg(130, 0);
-    
-    sleep(5);
 
 
-    
+    // sleep(1);
+    // fpga_ctl->writeReg(130, 0);
+    // sleep(1);
+    // fpga_ctl->writeReg(130, 1);
+    // sleep(1);
+    // fpga_ctl->writeReg(130, 0);
 
-    int total_time=0,ave_time;
-
-    std::vector<uint32_t> delay;
-
-
-    for(int i=0;i<1024;i++){
-        fpga_ctl->writeReg(151, i);
-        total_time = total_time + i*32*fpga_ctl->readReg(512+340);
-        delay.insert(delay.end(), fpga_ctl->readReg(512+340), i*72);      
-    }
-
-    std::sort(delay.begin(), delay.end());
-
-    size_t n = delay.size();
-    size_t idx_5 = std::min(static_cast<size_t>(0.05 * n), n - 1);
-    size_t idx_50 = std::min(static_cast<size_t>(0.50 * n), n - 1);
-    size_t idx_95 = std::min(static_cast<size_t>(0.95 * n), n - 1);
-
-    fmt::println("5th percentile: {}", delay[idx_5]);
-    fmt::println("50th percentile (median): {}", delay[idx_50]);
-    fmt::println("95th percentile: {}", delay[idx_95]);
-
-    // ave_time = total_time/msg_num_per_qpn;
-    // fmt::println("ave_time: {}", ave_time);
-                      
+    while(1);
 
 
 
-    fmt::println("data_cnt                                   : {}", fpga_ctl->readReg(512+320));
-    fmt::println("timer_en                                   : {}", fpga_ctl->readReg(512+321));
-    fmt::println("timer_cnt                                  : {}", fpga_ctl->readReg(512+322));
-    fmt::println("timer_cnt                                  : {}", fpga_ctl->readReg(512+322));
 
-    std::cout<< "speed: " << qpn_num*msg_num_per_qpn*length*8/(fpga_ctl->readReg(512+322)*4.444444444)<<" Gbps" << std::endl; 
+    // fmt::println("data_cnt                                   : {}", fpga_ctl->readReg(512+320));
+    // fmt::println("timer_en                                   : {}", fpga_ctl->readReg(512+321));
+    // fmt::println("timer_cnt                                  : {}", fpga_ctl->readReg(512+322));
+    // fmt::println("timer_cnt                                  : {}", fpga_ctl->readReg(512+322));
 
-    fmt::println("timer                                  : {}", (fpga_ctl->readReg(512+322))*4.4444444444444/1000);
+    // std::cout<< "speed: " << qpn_num*msg_num_per_qpn*length/(fpga_ctl->readReg(512+322)*4.444444444)<< std::endl; 
 
+    // fmt::println("timer                                  : {}", (fpga_ctl->readReg(512+322))*4.4444444444444/1000);
 
 
 
@@ -296,27 +295,35 @@ int main() {
 // fmt::println("rx_latency                     : {}", fpga_ctl->readReg(512+306));
 // fmt::println("rx_start_cnt                     : {}", fpga_ctl->readReg(512+307));
 // fmt::println("rx_end_cnt                     : {}", fpga_ctl->readReg(512+308));
+
 //     std::cout << "################################ p_h2c data BEGIN ################################" << std::endl;
     
-//     float timestamp,t0;
+//     float timestamp,final_ts,base_ts=0,pre_timestamp=0;
 //     int queue_length,queue_length1;
     
-    // t0 = swap_endian(p[2])/1000.0;
+//     // t0 = swap_endian(p[1])/1000.0;
 
-    // for(int j=0;j<(length+63)/64;j++){
-    //     queue_length = swap_endian(p[j*16+3]);
-    //     timestamp = swap_endian(p[j*16+2])/1000.0;
-    //     std::cout << "queue_length: " << queue_length << " timestamp: " << timestamp << std::endl; 
+//     for(int j=0;j<qpn_num*msg_num_per_qpn;j++){
+//         queue_length = swap_endian(p[j*16+2]);
+//         timestamp = swap_endian(p[j*16+1])/1000.0;
+//         if(timestamp <pre_timestamp){
+//             base_ts = base_ts + 262.144;
+//             final_ts = timestamp + base_ts;
+//         }else{
+//             final_ts = timestamp + base_ts;
+//         }
+//         std::cout << std::dec << "queue_length: " << queue_length << " timestamp: " << final_ts << std::endl; 
 
-        // if(queue_length == 0){
-        //     std::cout << "queue drain time" << (timestamp - t0) << std::endl; 
-        //     break;
-        // }
+//         pre_timestamp = timestamp;
+//         // if(queue_length == 0){
+//         //     std::cout << "queue drain time" << (timestamp - t0) << std::endl; 
+//         //     break;
+//         // }
 
-        // for(int i=15;i>=0;i--){
-        //     std::cout << std::hex << std::setw(8) << std::setfill('0') << p[i+j*16];
-        // }    
-        // std::cout << std::endl;        
-    // }
+//         // for(int i=15;i>=0;i--){
+//         //     std::cout << std::hex << std::setw(8) << std::setfill('0') << p[i+j*16];
+//         // }    
+//         // std::cout << std::endl;        
+//     }
 
 }

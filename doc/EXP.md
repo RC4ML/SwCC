@@ -9,8 +9,16 @@ This is the evalution for fig.7 in the paper.
 
 ### 1.1 Run the SwRDMA 
 
-Program `bistream/deser_one-shot_DMA.bit` to the FPGA, and after reboot the machine, run the following command to start the experiment:
+Program `bistream/SwRDMA-1.bit` to the FPGA on both the sender and receiver, and after reboot the machines, run the following command to start the experiment:
 
+
+Client:
+~~~bash
+cd src/build
+sudo example/
+~~~
+
+Server:
 ~~~bash
 sudo ../bin_host/deserialize_hw 0 8
 ~~~
@@ -19,7 +27,7 @@ sudo ../bin_host/deserialize_hw 0 8
 
 To run differenct BENCH, please edit `/src/deserialize_hw.cpp`, change `#define BENCH0` to `#define BENCHX` and recompile the program.
 
-The otput will be like this:
+The output will be like this:
 ~~~
 total size: 91323
 data_cnt                                   : 142701027
