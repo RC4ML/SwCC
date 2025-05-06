@@ -1,3 +1,6 @@
 [submodule "qdma_driver"]
 	path = qdma_driver
 	url = https://github.com/RC4ML/qdma_driver.git
+[submodule "rocev5"]
+	path = rocev5
+	url = https://github.com/carlzhang4/pRDMA.git
