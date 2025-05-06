@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/dcqcn10.dir/dcqcn10.cpp.o -o dcqcn10  -Wl,-rpath,/home/amax/hhj/SwCC/src/build ../libqdma.so -lpthread 

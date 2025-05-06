@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/timely.dir/timely.cpp.o -o timely  -Wl,-rpath,/home/amax/hhj/SwCC/src/build ../libqdma.so -lpthread 
