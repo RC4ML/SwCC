@@ -52,11 +52,11 @@ We use `sudo dmesg | grep qdma_pf` to check if the QDMA driver is loaded success
 
 ### 4.2 Check Building all RPCNIC software
 
-Now we create a `build_host` directory, and build all the software in the `build_host` directory.
+Now we create a `src/build` directory, and build all the software in the `build` directory.
 ~~~bash
 cd build_host
 cmake ..
-make -j
+make
 ~~~
 
-It should report no error. And we will get the output binary in the `bin_host` directory.
+It should report no error. And we will get the output binary in the `build/example` directory.
