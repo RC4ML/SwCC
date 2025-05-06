@@ -59,4 +59,4 @@ cmake ..
 make
 ~~~
 
-It should report no error. And we will get the output binary in the `bin_host` directory.
+It should report no error. And we will get the output binary in the `build/example` directory.
