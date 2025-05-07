@@ -1,0 +1,7 @@
+## this is a Cache simulator
+
+- suitable for FPGA Cache design
+- input file is just simple addr,not standard tracefile
+- read/write size is block size 
+
+

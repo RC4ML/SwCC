@@ -1,0 +1,69 @@
+#include<iostream>
+#include<string.h>
+#include "Cache.hpp"
+#include<fstream>
+#include<random>
+#include<ctime>
+using namespace std;
+
+int main() {
+    int a=0;
+    std::cout<<"Hello World"<<std::endl;
+    std:string str = "LRU";
+    
+    //cache->read((u_int64_t)0);
+    //cache->print_snapshot();
+    char ch[64] ;
+    ch[0] = 0x1a;
+    ch[1] = 0x2b;
+    // cache->write((u_int64_t)0,(void*)ch);
+    // cache->write((u_int64_t)0x4000,(void*)ch);
+    // cache->write((u_int64_t)0x8000,(void*)ch);
+    // cache->write((u_int64_t)0xc000,(void*)ch);
+    // cache->write((u_int64_t)0x10000,(void*)ch);
+    // cache->write((u_int64_t)0x8000,(void*)ch);
+    // cache->read((u_int64_t)0x10000);
+    // cache->read((u_int64_t)0x10000);
+    //read  from trace.txt and write/read to cache
+    //FILE *fp;
+ 
+
+
+   std::random_device rd;
+    int read_num = 10000;
+    u_int64_t addr;
+
+    //random read number interations
+
+    u_int64_t * addr_array = new u_int64_t[1000];
+    int random1;
+    int last_random;
+    for(int j=1 ; j<=128 ; j=j*2){
+        std::cout<<"Associativity: "<<j<<std::endl;
+        Cache* cache = new Cache(32768, 64, j, 0, 0, 1, 10);
+        for(int i = 0; i < read_num; i++) {
+            random1 = (rd()%1000000);
+            //std::cout<<"random number :"<<random1<<std::endl;
+            cache->read(random1);
+                
+        }
+        std::cout<<std::endl;
+        cache->print_stats();
+    }
+    // last_random =0;
+    // u_int64_t totaltime = 0;
+    //     for(int i = 0; i < read_num; i++) {
+    //         random1 = (rd()%1000000);
+    //         if(std::max(random1,last_random)-std::min(random1,last_random)>=200){
+    //             totaltime = totaltime + 106;
+    //         }else{
+    //             totaltime = totaltime + 73;
+    //         }
+                
+    //     }
+    // std::cout<<"Total time: "<<totaltime<<std::endl;
+    
+    //std::cout<<"Data: "<<*(int*)cache->read((u_int64_t)12345678)<<std::endl;
+    return 0;
+}
+
