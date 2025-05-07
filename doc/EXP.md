@@ -103,13 +103,75 @@ This is the evalution for fig.11(a) in the paper.
 
 
 ### 3.1 How to run ?
-```
+```bash
 cd cache/simulator
-bash test.sh
+bash run_cache.sh
 
 ```
 
 user can assign cache_size， block_size, and cache associativity.
-```
+```bash
 ./JSE --cache_size=32768 --block_size=64 --associativity=1
+```
+
+### 3.2 without cache
+```bash
+bash run_no_cache.sh 
+
+
+```
+
+output should like this
+```
+Total time: 105993565
+```
+
+### 3.2 with cache
+```bash
+bash run_cache.sh 
+```
+
+output should like below
+```
+Associativity: 1
+
+total time cost: 47669820
+Associativity: 2
+
+total time cost: 47667180
+Associativity: 4
+
+total time cost: 47678444
+Associativity: 8
+
+total time cost: 47672526
+Associativity: 16
+
+total time cost: 47681414
+Associativity: 32
+
+total time cost: 47672790
+Associativity: 64
+
+total time cost: 47674682
+Associativity: 128
+
+total time cost: 47671404
+```
+
+users can edit cache time parameters in `Cache.cpp` for `hit_time_cost`, `miss_time_cost1`, `miss_time_cost2`, `writeback_time`.
+we use these two set ups:
+
+```cpp
+//* without hint:
+static int hit_time_cost = 264;
+static int miss_time_cost1 = 994;
+static int miss_time_cost2 = 1324;
+static int writeback_time = 264;
+
+//* with hint:
+static int hit_time_cost = 264;
+static int miss_time_cost1 = 264;
+static int miss_time_cost2 = 484;
+static int writeback_time = 0;
 ```
