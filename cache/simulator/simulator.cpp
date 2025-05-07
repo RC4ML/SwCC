@@ -12,11 +12,12 @@ int cache_size;
 int block_size;
 int associativity;
 uint64_t read_num;
+u_int64_t QPnumber;
 DEFINE_int32(cache_size, 32768, "cache_size");
 DEFINE_int32(block_size, 64, "block_size");
 DEFINE_int32(associativity, 1, "associativity");
 DEFINE_uint64(read_num, 1000000, "read_num");
-
+DEFINE_uint64(QPnumber, 1000000, "QPnumber");
 
 int main() {
     cache_size = FLAGS_cache_size;
