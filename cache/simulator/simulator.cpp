@@ -4,12 +4,25 @@
 #include<fstream>
 #include<random>
 #include<ctime>
+#include <gflags/gflags.h>
 using namespace std;
 
+
+int cache_size;
+int block_size;
+int associativity;
+DEFINE_int32(cache_size, 32768, "cache_size");
+DEFINE_int32(block_size, 64, "block_size");
+DEFINE_int32(associativity, 1, "associativity");
+
+
 int main() {
+    cache_size = FLAGS_cache_size;
+    block_size = FLAGS_block_size;
+    associativity = FLAGS_associativity;
     int a=0;
     std::cout<<"Hello World"<<std::endl;
-    std:string str = "LRU";
+    std::string str = "LRU";
     
     //cache->read((u_int64_t)0);
     //cache->print_snapshot();
@@ -40,7 +53,7 @@ int main() {
     int last_random;
     for(int j=1 ; j<=128 ; j=j*2){
         std::cout<<"Associativity: "<<j<<std::endl;
-        Cache* cache = new Cache(32768, 64, j, 0, 0, 1, 10);
+        Cache* cache = new Cache(cache_size, block_size, j, 0, 0, 1, 10);
         for(int i = 0; i < read_num; i++) {
             random1 = (rd()%1000000);
             //std::cout<<"random number :"<<random1<<std::endl;
@@ -49,6 +62,7 @@ int main() {
         }
         std::cout<<std::endl;
         cache->print_stats();
+        delete cache;
     }
     // last_random =0;
     // u_int64_t totaltime = 0;

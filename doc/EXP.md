@@ -102,3 +102,14 @@ speed: 6.06354 Gbps
 This is the evalution for fig.11(a) in the paper.
 
 
+### 3.1 How to run ?
+```
+cd cache/simulator
+bash test.sh
+
+```
+
+user can assign cache_size， block_size, and cache associativity.
+```
+./JSE --cache_size=32768 --block_size=64 --associativity=1
+```
