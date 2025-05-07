@@ -11,17 +11,20 @@ using namespace std;
 int cache_size;
 int block_size;
 int associativity;
+uint64_t read_num;
 DEFINE_int32(cache_size, 32768, "cache_size");
 DEFINE_int32(block_size, 64, "block_size");
 DEFINE_int32(associativity, 1, "associativity");
+DEFINE_uint64(read_num, 1000000, "read_num");
 
 
 int main() {
     cache_size = FLAGS_cache_size;
     block_size = FLAGS_block_size;
     associativity = FLAGS_associativity;
+    read_num = FLAGS_read_num;
     int a=0;
-    std::cout<<"Hello World"<<std::endl;
+    
     std::string str = "LRU";
     
     //cache->read((u_int64_t)0);
@@ -43,7 +46,6 @@ int main() {
 
 
    std::random_device rd;
-    int read_num = 10000;
     u_int64_t addr;
 
     //random read number interations
@@ -64,18 +66,8 @@ int main() {
         cache->print_stats();
         delete cache;
     }
-    // last_random =0;
-    // u_int64_t totaltime = 0;
-    //     for(int i = 0; i < read_num; i++) {
-    //         random1 = (rd()%1000000);
-    //         if(std::max(random1,last_random)-std::min(random1,last_random)>=200){
-    //             totaltime = totaltime + 106;
-    //         }else{
-    //             totaltime = totaltime + 73;
-    //         }
-                
-    //     }
-    // std::cout<<"Total time: "<<totaltime<<std::endl;
+    
+    
     
     //std::cout<<"Data: "<<*(int*)cache->read((u_int64_t)12345678)<<std::endl;
     return 0;

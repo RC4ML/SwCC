@@ -10,6 +10,9 @@ Cache.o:Cache.cpp Cache.hpp Replacement.hpp Block.hpp Block.cpp
 
 main.o:simulator.cpp Cache.hpp Replacement.hpp Block.hpp
 	g++ -c simulator.cpp  -lgflags -std=c++11 -o main.o
+
+no-cache:
+	g++  -o no-cache  no_cache.cpp -lgflags -std=c++11
  
 clean:
-	rm -f *.o JSE
+	rm -f *.o JSE no-cache

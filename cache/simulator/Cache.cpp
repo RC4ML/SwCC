@@ -216,7 +216,7 @@ void Cache::print_stats() {
     //std::cout << "total_write_hit_count: " << total_write_hit_count << std::endl;
     //std::cout << "total_read_miss_count: " << total_read_miss_count << std::endl;
     //std::cout << "total_write_miss_count: " << total_write_miss_count << std::endl;
-    std::cout << "hit rate: " << (double)(total_read_hit_count + total_write_hit_count) / (total_read_count + total_write_count) << std::endl;
+    //std::cout << "hit rate: " << (double)(total_read_hit_count + total_write_hit_count) / (total_read_count + total_write_count) << std::endl;
     std::cout << "total time cost: " << time_cost_x10/10 << std::endl;
     //std::cout << "miss rate: " << (double)(total_read_miss_count + total_write_miss_count) / (total_read_count + total_write_count) << std::endl;
     //std::cout << "read hit rate: " << (double)total_read_hit_count / total_read_count << std::endl;
