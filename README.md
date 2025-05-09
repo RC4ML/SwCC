@@ -1,7 +1,8 @@
 # SwRDMA: Enabling Software-Programmable Congestion Control in High-Speed NIC RDMA Engines [ATC2025]
 
 
-
+A RDMA Engine that enables oftware-Programmable Congestion Control in High-Speed
+NIC. This is the source code for our ATC'25 paper.
 
 
 ## Required hardware and software
@@ -14,7 +15,7 @@
 
 
 ## Install Dependencies and Build
-See [INSTALL.md](./doc/INSTALL.md) for install dependencies and build RPCNIC on a single machine.
+See [INSTALL.md](./doc/INSTALL.md) for install dependencies and build SwRDMA on a single machine.
 
 ## Connect and Deploy Bitstream
 See [DEPLOY.md](./doc/DEPLOY.md) for connecting to our artifact machine and  deploying FPGA bitstream on Xilinx U280.
@@ -25,30 +26,22 @@ If Check if the configuration is correct in Run Experiments of [EXP.md](./doc/EX
 
 ## Implementation and Compilation of Various Congestion Control Algorithms
 
-See [riscv/README.md](./riscv/README.md) for details on how we implement various congestion control algorithms (CCAs) and compile them into binary (bin) files.
+See [riscv/README.md](./riscv/README.md) for details on how we implement various congestion control algorithms (CCAs) and compile them into MEM(.mem) files.
 
-After generating the binary (bin) file, we load it into the RISC-V instruction memory (on-chip RAM of the FPGA) and then generate the FPGA bitstream. In the ./bitstream directory, we provide the bitstreams for the DCQCN algorithm.
+After generating the MEM(.mem) file, we load it into the RISC-V instruction memory (on-chip RAM of the FPGA) and then generate the FPGA bitstream. In the ./bitstream directory, we provide the bitstreams for the DCQCN algorithm.
 
 ### Directory Structure:
 
 ~~~
 .
+├── Baseline (the source code for RoCE and Soft-RoCE experiments)
+│   └── libr (used for RoCE and Soft-RoCE experiments)
+│   └── rex (the source code of rdma_rex for Soft-RoCE)
 ├── bitstream (U280 Bitstream)
-├── Baseline (chisel compiled intermediate products)
-├── include
-│   └── bench_header (HyperProtoBench and DeathStarBench header file)
-├── src (main CPU control code)
-│   └── chisel (partial used chisel code)
-├── test_suite (source code of experiments)
-│   ├── dsa_offload (used for DSA offload experiment)
-│   ├── e2e_compression (used for e2e compression experiment)
-│   └── hardware_tb (used for micro benchmark)
-├── third_party (software used third party libs)
-│   ├── asio
-│   ├── atomic_queue
-│   ├── eRPC
-│   └── fmt
-└── utils
+├── doc (User Manual)
+├── riscv (the CCA code running on RISC-V)
+├── SwRDMA (the source code for SwRDMA experiments)
 ~~~
 
 
+s

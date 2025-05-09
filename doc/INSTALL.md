@@ -27,15 +27,9 @@ cd MLNX_OFED_LINUX-23.04-1.1.3.0-ubuntu18.04-x86_64 && sudo ./ofedinstall
 ~~~
 
 
-## 3. Install required libs:
+## 3. Validate if preparations are all done
 
-~~~bash
-sudo apt install libgflags-dev libnuma-dev
-~~~
-
-## 4. Validate if preparations are all done
-
-### 4.1 Check QDMA driver status
+### 3.1 Check QDMA driver status
 
 We use `sudo dmesg | grep qdma_pf` to check if the QDMA driver is loaded successfully. Here is a successful output:
 ~~~bash
@@ -52,7 +46,7 @@ We use `sudo dmesg | grep qdma_pf` to check if the QDMA driver is loaded success
 [  194.576282] qdma_pf:qdma_device_open: 0000:1a:00.0, 1a000, pdev 0x0000000055a384ed, xdev 0x0000000036f2e3ee, ch 1, q 0, vf 0.
 ~~~
 
-### 4.2 Building SwRDMA software
+### 3.2 Build SwRDMA software
 
 Now we create a `SwRDMA/build` directory, and build the SwRDMA software in the `build` directory.
 ~~~bash
@@ -64,7 +58,7 @@ make
 
 It should report no error. And we will get the output binary in the `SwRDMA/build/example` directory.
 
-### 4.3 Building Baseline software
+### 3.3 Build baseline software
 
 Now we create a `Baseline/libr/build` directory, and build the Baseline software in the `build` directory.
 ~~~bash
@@ -77,9 +71,9 @@ make
 It should report no error. And we will get the output binary in the `Baseline/libr/build` directory.
 
 
-## 5. After completing the RoCE experiments, follow these steps to prepare for the Soft-RoCE experiments.
+## 4. After completing the RoCE experiments, follow these steps to prepare for the Soft-RoCE experiments.
 
-### 5.1 Uninstall MLNX_OFED
+### 4.1 Uninstall MLNX_OFED
 
 Use the official uninstallation script **uninstall.sh** to uninstall MLNX_OFED, and then reboot the machine.
 
@@ -89,7 +83,7 @@ sudo ./uninstall.sh
 sudo reboot
 ~~~
 
-### 5.2 Load kernel module
+### 4.2 Load kernel modules
 
 Ensure that the kernel modules **ib_core**, **ip6_udp_tunnel**, **udp_tunnel**, and **ib_uverbs** are loaded, and update module dependencies.
 
@@ -101,7 +95,7 @@ sudo modprobe ib_uverbs
 sudo depmod -a
 ~~~
 
-### 5.3 Compile and install the RXE module
+### 4.3 Compile and install the RXE module
 
 Compile **rdma_rxe.ko** and install the kernel module
 
@@ -111,13 +105,13 @@ make -j
 sudo insmod ./rdma_rxe.ko
 ~~~
 
-### 5.4 Install dependency libraries
+### 4.4 Install dependency libraries
 
 ~~~bash
 sudo apt install librdmacm-dev libibverbs-dev libibumad-dev libpci-dev
 ~~~
 
-### 5.5 Other environment setup
+### 4.5 Other environment setup
 
 Use ifconfig to check the network interface name, bind the interface as a Soft-RoCE device, then modify the MTU and disable irqbalance.
 
