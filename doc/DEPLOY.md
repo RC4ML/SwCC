@@ -45,23 +45,28 @@ Then check the name and the type of hardware target, and click `Next`.
 
 Finally we connect to the FPGA.
 
-![](images/202411301502.png)
+![](images/202505092221.png)
 
 ### 2.4 Program FPGA
 
-Choose U280 with the ID **21770205K02VA**
+Right click the U280 with the ID **21770205K02VA** and click `Open Target`.
+![](images/202505092223.png)
+
 Right click the FPGA name `xcu280_u55c_0` and click `Program Device`.
-![](images/202411301503.png)
+![](images/202505092224.png)
 
 Then choose the bitstream file `bitstream/xxxxx.bit` and click `Program`. You don't need set `Debug probes file`.
-![](images/202411301504.png)
+![](images/202505092226.png)
 
-After the bitstream has been successfully programmed. Choose U280 with the ID **21760297J03CA**
+After the bitstream has been successfully programmed.
+Right click the U280 with the ID **21760297J03CA** and click `Open Target`.
+![](images/202505092227.png)
+
 Right click the FPGA name `xcu280_u55c_0` and click `Program Device`.
-![](images/202411301503.png)
+![](images/202505092228.png)
 
 Then choose the bitstream file `bitstream/xxxxx.bit` and click `Program`. You don't need set `Debug probes file`.
-![](images/202411301504.png)
+![](images/202505092226.png)
 
 ### 2.5 Restart sender and recerver machine
 
