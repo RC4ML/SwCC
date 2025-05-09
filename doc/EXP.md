@@ -216,3 +216,8 @@ This is the evalution for Table.3 in the paper.
 See [riscv/README.md](./riscv/README.md) for details on how we implement various congestion control algorithms (CCAs) and compile them into MEM(.mem) files.
 
 After generating the MEM(.mem) file, we load it into the RISC-V instruction memory (on-chip RAM of the FPGA) and then generate the FPGA bitstream. In the ./bitstream directory, we provide the bitstreams for the DCQCN algorithm.
+
+
+
+## 4. Full FPGA Code
+Due to confidentiality requirements, we are currently unable to provide the hardware code for bitstream generation. However, we provide pre-generated bitstream files for experimental use.

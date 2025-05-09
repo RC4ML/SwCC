@@ -42,6 +42,3 @@ After generating the MEM(.mem) file, we load it into the RISC-V instruction memo
 ├── riscv (the CCA code running on RISC-V)
 ├── SwRDMA (the source code for SwRDMA experiments)
 ~~~
-
-
-s
