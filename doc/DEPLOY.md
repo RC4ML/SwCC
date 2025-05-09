@@ -1,14 +1,15 @@
 # Connect and Deploy Bitstream
 
-We provide two machines for artifact evaluation. The **FPGA machine** is equiped with a Xilinx U280 FPGA machine, and the second machine is a **Vivado machine**. The FPGA machine is used for the RPCNIC experiment, and the Vivado machine is used for deploying bitstream.
+We provide three machines for artifact evaluation: a **sender**, a **receiver**, and a **Vivado machine**. Both the **sender** and the **receiver** are equiped with a Xilinx U280 FPGA and a ConnectX-5 NIC machine. The **sender** and the **receiver** are used for the experiment, and the **Vivado machine** is used for deploying bitstream.
+
 
 ## 1. Connect to Artifact Machine
-We already create a sudo user `hpca25` on two machines. The password is `hpca25`, but disable password login for security reasons. You can use the following command to connect to the artifact machine.
+We already create a sudo user `atc25` on three machines, but disable password login for security reasons. You can use the following command to connect to the artifact machine.
 
 
-1. Download private key `hpca25_id_ed25519` from the submit website.
+1. Download private key `atc25_id_ed25519` from the submit website.
 2. Get the jump server domain name (use `jump` refer as following) from the submit website, we provide IPV4 server and IPV6 server(recommend).
-3. `ssh hpca25@jump -p xxx -i hpca25_id_ed25519`
+3. `ssh atc25@js.v4.rc4ml.org -p xxx -i atc25_id_ed25519`
 4. Enjoy for testing
 5. If you have any questions, please contact us.
 
@@ -48,12 +49,20 @@ Finally we connect to the FPGA.
 
 ### 2.4 Program FPGA
 
+Choose U280 with the ID **21770205K02VA**
 Right click the FPGA name `xcu280_u55c_0` and click `Program Device`.
 ![](images/202411301503.png)
 
 Then choose the bitstream file `bitstream/xxxxx.bit` and click `Program`. You don't need set `Debug probes file`.
 ![](images/202411301504.png)
 
-### 2.5 Restart machine
+After the bitstream has been successfully programmed. Choose U280 with the ID **21760297J03CA**
+Right click the FPGA name `xcu280_u55c_0` and click `Program Device`.
+![](images/202411301503.png)
 
-After programming the FPGA, you should restart the machine by typing `sudo reboot` in the terminal. And then you can run the RPCNIC experiment on the FPGA machine.
+Then choose the bitstream file `bitstream/xxxxx.bit` and click `Program`. You don't need set `Debug probes file`.
+![](images/202411301504.png)
+
+### 2.5 Restart sender and recerver machine
+
+After programming the FPGA, you should restart the sender and receiver by typing `sudo reboot` in the terminal. And then you can run the SwRDMA experiment.

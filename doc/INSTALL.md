@@ -2,6 +2,8 @@
 
 This document shows all of the essential software installation process on test machine. **We already install all dependencies on our artifact machines.**
 
+**Important: The RoCE experiments require MLNX_OFED to be installed, whereas the Soft-RoCE experiments require it to be uninstalled. Therefore, we strongly recommend completing all RoCE experiments before uninstalling MLNX_OFED.**
+
 ## 1. Install QDMA Driver:
 
 You should use `lspci | grep Xilinx` to find the correct device id. For example, if the device id is `2a:00.0`, you should replace `2a:00.0` with `1a:00.0` in the following commands.
@@ -50,13 +52,85 @@ We use `sudo dmesg | grep qdma_pf` to check if the QDMA driver is loaded success
 [  194.576282] qdma_pf:qdma_device_open: 0000:1a:00.0, 1a000, pdev 0x0000000055a384ed, xdev 0x0000000036f2e3ee, ch 1, q 0, vf 0.
 ~~~
 
-### 4.2 Check Building all RPCNIC software
+### 4.2 Building SwRDMA software
 
-Now we create a `src/build` directory, and build all the software in the `build` directory.
+Now we create a `SwRDMA/build` directory, and build the SwRDMA software in the `build` directory.
 ~~~bash
-cd build_host
+mkdir SwRDMA/build
+cd SwRDMA/build
 cmake ..
 make
 ~~~
 
-It should report no error. And we will get the output binary in the `build/example` directory.
+It should report no error. And we will get the output binary in the `SwRDMA/build/example` directory.
+
+### 4.3 Building Baseline software
+
+Now we create a `Baseline/libr/build` directory, and build the Baseline software in the `build` directory.
+~~~bash
+mkdir Baseline/libr/build
+cd Baseline/libr/build
+cmake ..
+make
+~~~
+
+It should report no error. And we will get the output binary in the `Baseline/libr/build` directory.
+
+
+## 5. After completing the RoCE experiments, follow these steps to prepare for the Soft-RoCE experiments.
+
+### 5.1 Uninstall MLNX_OFED
+
+Use the official uninstallation script **uninstall.sh** to uninstall MLNX_OFED, and then reboot the machine.
+
+~~~bash
+cd ~/MLNX_OFED_LINUX-23.04-1.1.3.0-ubuntu18.04-x86_64/
+sudo ./uninstall.sh
+sudo reboot
+~~~
+
+### 5.2 Load kernel module
+
+Ensure that the kernel modules **ib_core**, **ip6_udp_tunnel**, **udp_tunnel**, and **ib_uverbs** are loaded, and update module dependencies.
+
+~~~bash
+sudo modprobe ib_core
+sudo modprobe ip6_udp_tunnel 
+sudo modprobe udp_tunnel 
+sudo modprobe ib_uverbs
+sudo depmod -a
+~~~
+
+### 5.3 Compile and install the RXE module
+
+Compile **rdma_rxe.ko** and install the kernel module
+
+~~~bash
+cd ~/SwCC/Baseline/rxe/
+make -j
+sudo insmod ./rdma_rxe.ko
+~~~
+
+### 5.4 Install dependency libraries
+
+~~~bash
+sudo apt install librdmacm-dev libibverbs-dev libibumad-dev libpci-dev
+~~~
+
+### 5.5 Other environment setup
+
+Use ifconfig to check the network interface name, bind the interface as a Soft-RoCE device, then modify the MTU and disable irqbalance.
+
+atc25@r4:
+~~~bash
+sudo rdma link add sr4 type rxe netdev enp62s0np0
+sudo ifconfig enp62s0np0 mtu 9000 up
+sudo service irqbalance stop
+~~~
+
+atc25@r3:
+~~~bash
+sudo rdma link add sr3 type rxe netdev enp28s0np0
+sudo ifconfig enp28s0np0 mtu 9000 up
+sudo service irqbalance stop
+~~~

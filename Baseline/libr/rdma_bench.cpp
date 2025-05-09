@@ -25,7 +25,7 @@ string DEVICE_NAME;
 int GID_INDEX;
 int NUMA_NODE;
 int BATCH_SIZE = 1;
-int OUTSTANDING = 48;
+int OUTSTANDING;
 bool RECORD_FLAG;
 std::atomic<bool> stop_flag = false;
 
@@ -264,6 +264,7 @@ DEFINE_int32(gidIndex, 3, "gidIndex");
 DEFINE_int32(numaNode, 0, "numaNode");
 DEFINE_int32(port, 6666, "bind_port");
 DEFINE_bool(recordFlag, false, "record p4 switch data");
+DEFINE_int32(outstanding, 1, "outstanding");
 
 
 std::vector<pkt_info> MergeResult(std::vector<std::vector<pkt_info>> &arrs) {
@@ -313,6 +314,7 @@ int main(int argc, char *argv[]) {
 	GID_INDEX = FLAGS_gidIndex;
 	NUMA_NODE = FLAGS_numaNode;
 	RECORD_FLAG = FLAGS_recordFlag;
+	OUTSTANDING = FLAGS_outstanding;
 
 	NetParam net_param;
 	net_param.numNodes = 2;

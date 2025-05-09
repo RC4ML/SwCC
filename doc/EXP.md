@@ -1,7 +1,9 @@
 # Evaluation
 
-**Important:** Please see [INSTALL.md](./INSTALL.md) for install dependencies and build RPCNIC on a single machine. 
-**Important:** Please see [DEPLOY.md](./DEPLOY.md) for connecting to our artifact machine and deploying FPGA bitstream on Xilinx U280.
+# Evaluation
+
+**Important:** Please see [INSTALL.md](./INSTALL.md) for install dependencies and build SwRDMA and Baseline on sender and reciever machine. 
+**Important:** Please see [DEPLOY.md](./DEPLOY.md) for connecting to our artifact machine and deploying FPGA bitstream on Xilinx U280s.
 
 ## 1. Comparison of Control Loop Delay
 
@@ -32,7 +34,9 @@ and the receiver displays the message:
 After the receiver is launched, enter any value to begin the latency test.
 ~~~
 
-Entering any value on the receiver. Then，entering any value on the sender. The output will be like this:
+Entering any value on the receiver. Then，entering any value on the sender. 
+
+The output will be like this:
 
 ~~~
 5th percentile: 3096 ns
@@ -44,9 +48,43 @@ Entering any value on the receiver. Then，entering any value on the sender. The
 
 ### 1.2 Run the RoCE
 
+To begin the experiment, run the following commands in sequence.
+
+Receiver:
+~~~bash
+cd Baseline/libr/build
+sudo ./rdma_bench  -serverIp 10.0.0.4 -nodeId 0  -deviceName mlx5_0 -gidIndex 3 -bufSize 104857600 -iterations 500 -threads 1 -packSize 1024 -outstanding 1
+~~~
+
+Sender:
+~~~bash
+cd Baseline/libr/build
+sudo ./rdma_bench  -serverIp 10.0.0.4 -nodeId 1  -deviceName mlx5_0 -gidIndex 3 -bufSize 104857600 -iterations 500 -threads 1 -packSize 1024 -outstanding 1
+~~~
+
+`drdma_bench` program accepts nine arguments: The `threads` argument means the number of QPNs (Queue Pair Numbers) to run during the test. The `packSize` argument means the packet size in bytes. The `outstanding` argument means the number of outstanding RDMA requests.
+
+
+
+On the sender, the output will be like this:
+
+~~~
+#[Mean    =     3231.062, StdDeviation   =      548.675]
+#[Max     =   241663.955, Total count    =       512000]
+#[Buckets =            7, SubBuckets     =         2048]
+~~~
+
 
 ### 1.3  Run the Soft-RoCE
 
+
+
+
+~~~
+#[Mean    =    24071.424, StdDeviation   =     4684.146]
+#[Max     =   318184.682, Total count    =       512000]
+#[Buckets =            7, SubBuckets     =         2048]
+~~~
 
 
 ## 2. Effect of TX/RX Separated Multi-Core
@@ -80,7 +118,9 @@ and the receiver displays the message:
 After the receiver is launched, enter any value to begin the latency test.
 ~~~
 
-Entering any value on the receiver. Then，entering any value on the sender. The output will be like this:
+Entering any value on the receiver. Then，entering any value on the sender. 
+
+On the sender, the output will be like this:
 
 ~~~
 data_cnt                                   : 10001
@@ -91,9 +131,42 @@ speed: 6.06354 Gbps
 
 ### 2.2 Run the RoCE-1 & RoCE-8
 
+To begin the experiment, run the following commands in sequence.
+
+Receiver:
+~~~bash
+cd Baseline/libr/build
+sudo ./rdma_bench  -serverIp 10.0.0.4 -nodeId 0  -deviceName mlx5_0 -gidIndex 3 -bufSize 104857600 -iterations 500 -threads 1 -packSize 64 -outstanding 48
+~~
+
+
+Sender:
+~~~bash
+cd Baseline/libr/build
+sudo ./rdma_bench  -serverIp 10.0.0.4 -nodeId 1  -deviceName mlx5_0 -gidIndex 3 -bufSize 104857600 -iterations 500 -threads 1 -packSize 64 -outstanding 48
+~~~
+
+`drdma_bench` program accepts nine arguments: The `threads` argument means the number of QPNs (Queue Pair Numbers) to run during the test. The `packSize` argument means the packet size in bytes. 
+
+
+To test different configurations, adjust the `threads` argument to change the number of QPNs, and the `packSize` argument to change the packet size (in bytes).
+
+
+On the sender and receiver, the output will be like this:
+
+~~~
+[INFO][15:07:15.973][rdma_bench.cpp:113][sub_task_server]                                           Data verification success, thread [0], duration [0.188152]s, throughput [1.393258] Gpbs
+~~~
+
 
 ### 2.3 Run the Soft-RoCE-1 & Soft-RoCE-24
 
+
+
+
+~~~
+[INFO][18:03:04.057][rdma_bench.cpp:113][sub_task_server]                                           Data verification success, thread [0], duration [2.575283]s, throughput [0.101792] Gpbs
+~~~
 
 
 ## 3. Average Time to Access QP Context
