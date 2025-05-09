@@ -23,9 +23,11 @@ See [DEPLOY.md](./doc/DEPLOY.md) for connecting to our artifact machine and  dep
 If Check if the configuration is correct in Run Experiments of [EXP.md](./doc/EXP.md) passes, then everything will be fine. Please refer to exp.md for more details.
 
 
-##
+## Implementation and Compilation of Various Congestion Control Algorithms
 
+See [riscv/README.md](./riscv/README.md) for details on how we implement various congestion control algorithms (CCAs) and compile them into binary (bin) files.
 
+After generating the binary (bin) file, we load it into the RISC-V instruction memory (on-chip RAM of the FPGA) and then generate the FPGA bitstream. In the ./bitstream directory, we provide the bitstreams for the DCQCN algorithm.
 
 ### Directory Structure:
 
