@@ -1,6 +1,6 @@
 # Connect and Deploy Bitstream
 
-We provide three machines for artifact evaluation: a **sender**(atc@r4), a **receiver**(atc@r3), and a **Vivado machine**(atc@max). Both the **sender** and the **receiver** are equiped with a Xilinx U280 FPGA and a ConnectX-5 NIC machine. The **sender** and the **receiver** are used for the experiment, and the **Vivado machine** is used for deploying bitstream.
+We provide five machines for artifact evaluation: a **sender0**(atc@r4), a **receiver0**(atc@r3), a **sender1**(atc@r2), a **receiver1**(atc@r1), and a **Vivado machine**(atc@max). All the **sender** and the **receiver** are equiped with a Xilinx U280 FPGA and a ConnectX-5 NIC machine. The **sender** and the **receiver** are used for the experiment, and the **Vivado machine** is used for deploying bitstream.
 
 
 ## 1. Connect to Artifact Machine

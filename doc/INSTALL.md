@@ -2,7 +2,7 @@
 
 This document shows all of the essential software installation process on test machine. **We already install all dependencies on our artifact machines.**
 
-**Important: The RoCE experiments require MLNX_OFED to be installed, whereas the Soft-RoCE experiments require it to be uninstalled. Therefore, we strongly recommend completing all RoCE experiments before uninstalling MLNX_OFED.**
+**Important: The RoCE experiments require MLNX_OFED to be installed, whereas the Soft-RoCE experiments require it to be uninstalled. Therefore, please conduct the SwRDMA and Soft-RoCE experiments on sender0 and receiver0, and perform the RoCE experiments on sender1 and receiver1.**
 
 ## 1. Install QDMA Driver:
 
@@ -21,9 +21,10 @@ sudo dma-ctl qdma1a000 q start idx 0 dir bi desc_bypass_en pfetch_bypass_en
 
 You can choose any version of MLNX_OFED, but we recommend using the version we used in our artifact evaluation. You can download the version from the following link
 ~~~bash
-wget https://content.mellanox.com/ofed/MLNX_OFED-23.04-1.1.3.0/MLNX_OFED_LINUX-23.04-1.1.3.0-ubuntu18.04-x86_64.tgz
-tar -zxvf ./MLNX_OFED_LINUX-23.04-1.1.3.0-ubuntu18.04-x86_64.tgz
-cd MLNX_OFED_LINUX-23.04-1.1.3.0-ubuntu18.04-x86_64 && sudo ./ofedinstall
+cd ~
+wget https://content.mellanox.com/ofed/MLNX_OFED-23.10-2.1.3.1/MLNX_OFED_LINUX-23.10-2.1.3.1-ubuntu22.04-x86_64.tgz
+tar -zxvf ./MLNX_OFED_LINUX-23.10-2.1.3.1-ubuntu22.04-x86_64.tgz
+cd MLNX_OFED_LINUX-23.10-2.1.3.1-ubuntu22.04-x86_64 && sudo sudo ./mlnxofedinstall --add-kernel-support --skip-repo
 ~~~
 
 
@@ -71,19 +72,10 @@ make
 It should report no error. And we will get the output binary in the `Baseline/libr/build` directory.
 
 
-## 4. After completing the RoCE experiments, follow these steps to prepare for the Soft-RoCE experiments.
+## 4. Prepare for the Soft-RoCE experiments.
 
-### 4.1 Uninstall MLNX_OFED
 
-Use the official uninstallation script **uninstall.sh** to uninstall MLNX_OFED, and then reboot the machine.
-
-~~~bash
-cd ~/MLNX_OFED_LINUX-23.04-1.1.3.0-ubuntu18.04-x86_64/
-sudo ./uninstall.sh
-sudo reboot
-~~~
-
-### 4.2 Load kernel modules
+### 4.1 Load kernel modules
 
 Ensure that the kernel modules **ib_core**, **ip6_udp_tunnel**, **udp_tunnel**, and **ib_uverbs** are loaded, and update module dependencies.
 
@@ -95,7 +87,7 @@ sudo modprobe ib_uverbs
 sudo depmod -a
 ~~~
 
-### 4.3 Compile and install the RXE module
+### 4.2 Compile and install the RXE module
 
 Compile **rdma_rxe.ko** and install the kernel module
 
@@ -105,13 +97,13 @@ make -j
 sudo insmod ./rdma_rxe.ko
 ~~~
 
-### 4.4 Install dependency libraries
+### 4.3 Install dependency libraries
 
 ~~~bash
 sudo apt install librdmacm-dev libibverbs-dev libibumad-dev libpci-dev
 ~~~
 
-### 4.5 Other environment setup
+### 4.4 Other environment setup
 
 Use ifconfig to check the network interface name, bind the interface as a Soft-RoCE device, then modify the MTU and disable irqbalance.
 
