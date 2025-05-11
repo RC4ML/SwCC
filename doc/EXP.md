@@ -14,12 +14,12 @@ This is the evalution for fig.7 in the paper.
 Program `bistream/SwRDMA-1.bit` to the FPGA on both the sender0 and receiver0, and after reboot the machines, run the following command to start the experiment:
 
 
-Receiver0:
+Receiver0(atc@r3):
 ~~~bash
 sudo SwRDMA/build/example/latency_receiver
 ~~~
 
-Sender0:
+Sender0(atc@r4):
 ~~~bash
 sudo SwRDMA/build/example/latency_sender
 ~~~
@@ -49,13 +49,13 @@ The output will be like this:
 
 To begin the experiment, run the following commands in sequence.
 
-Receiver1:
+Receiver1(atc@r1):
 ~~~bash
 cd Baseline/libr/build
 sudo ./rdma_bench  -serverIp 10.0.0.1 -nodeId 0  -deviceName mlx5_0 -gidIndex 3 -bufSize 104857600 -iterations 500 -threads 1 -packSize 1024 -outstanding 1
 ~~~
 
-Sender1:
+Sender1(atc@r2):
 ~~~bash
 cd Baseline/libr/build
 sudo ./rdma_bench  -serverIp 10.0.0.1 -nodeId 1  -deviceName mlx5_0 -gidIndex 3 -bufSize 104857600 -iterations 500 -threads 1 -packSize 1024 -outstanding 1
@@ -82,13 +82,13 @@ Run the following commands in sequence.
 **Note: If the machine has been rebooted, please reconfigure the Soft-RoCE environment according to Step 4 in [INSTALL.md](./INSTALL.md).**
 
 
-Receiver0:
+Receiver0(atc@r3):
 ~~~bash
 cd Baseline/libr/build
 sudo ./rdma_bench  -serverIp 10.0.0.3 -nodeId 0  -deviceName sr3 -gidIndex 1 -bufSize 104857600 -iterations 500 -threads 1 -packSize 1024 -outstanding 1
 ~~~
 
-Sender0:
+Sender0(atc@r4):
 ~~~bash
 cd Baseline/libr/build
 sudo ./rdma_bench  -serverIp 10.0.0.3 -nodeId 1  -deviceName sr4 -gidIndex 1 -bufSize 104857600 -iterations 500 -threads 1 -packSize 1024 -outstanding 1
@@ -112,12 +112,12 @@ This is the evalution for fig.10 in the paper.
 #### 2.1.1 Run the SwRDMA-1
 Program `bistream/SwRDMA-1.bit` to the FPGA on both the sender0 and receiver0, and after reboot the machines, run the following command to start the experiment:
 
-Receiver0:
+Receiver0(atc@r3):
 ~~~bash
 sudo SwRDMA/build/example/throughput_receiver 64
 ~~~
 
-Sender0:
+Sender0(atc@r4):
 ~~~bash
 sudo SwRDMA/build/example/throughput_sender 64
 ~~~
@@ -156,14 +156,14 @@ Program `bistream/SwRDMA-8.bit` to the FPGA on both the sender0 and receiver0. A
 
 To begin the experiment, run the following commands in sequence.
 
-Receiver1:
+Receiver1(atc@r1):
 ~~~bash
 cd Baseline/libr/build
 sudo ./rdma_bench  -serverIp 10.0.0.1 -nodeId 0  -deviceName mlx5_0 -gidIndex 3 -bufSize 104857600 -iterations 500 -threads 1 -packSize 64 -outstanding 48
 ~~
 
 
-Sender1:
+Sender(atc@r2):
 ~~~bash
 cd Baseline/libr/build
 sudo ./rdma_bench  -serverIp 10.0.0.1 -nodeId 1  -deviceName mlx5_0 -gidIndex 3 -bufSize 104857600 -iterations 500 -threads 1 -packSize 64 -outstanding 48
@@ -190,14 +190,14 @@ Run the following commands in sequence.
 
 **Note: If the machine has been rebooted, please reconfigure the Soft-RoCE environment according to Step 4 in [INSTALL.md](./INSTALL.md).**
 
-Receiver0:
+Receiver0(atc@r3):
 ~~~bash
 cd Baseline/libr/build
 sudo ./rdma_bench  -serverIp 10.0.0.4 -nodeId 0  -deviceName sr3 -gidIndex 1 -bufSize 104857600 -iterations 500 -threads 1 -packSize 64 -outstanding 48
 ~~
 
 
-Sender0:
+Sender0(atc@r4):
 ~~~bash
 cd Baseline/libr/build
 sudo ./rdma_bench  -serverIp 10.0.0.4 -nodeId 1  -deviceName sr4 -gidIndex 1 -bufSize 104857600 -iterations 500 -threads 1 -packSize 64 -outstanding 48
@@ -217,6 +217,8 @@ On the sender0 and receiver0, the output will be like this:
 This is the evalution for Table.3 in the paper.
 
 See [riscv/README.md](./riscv/README.md) for details on how we implement various congestion control algorithms (CCAs) and compile them into MEM(.mem) files.
+
+**Note: We only install 'riscv-gnu-toolchain' dependencies on 'vivado machines'.**
 
 After generating the MEM(.mem) file, we load it into the RISC-V instruction memory (on-chip RAM of the FPGA) and then generate the FPGA bitstream. In the ./bitstream directory, we provide the bitstreams for the DCQCN algorithm.
 
