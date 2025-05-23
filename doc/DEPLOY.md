@@ -36,7 +36,7 @@ Click `Next` to continue.
 
 ![](images/202411301458.png)
 
-Type in `192.168.189.16` and `3123` for `Remote server`, and click `Next`.
+Type in `192.168.189.16` and `3121` for `Remote server`, and click `Next`.
 
 ![](images/202411301500.png)
 
