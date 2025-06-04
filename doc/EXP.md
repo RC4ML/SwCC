@@ -1,27 +1,27 @@
 # Evaluation
 
-**Important:** Please see [INSTALL.md](./INSTALL.md) for install dependencies and build SwRDMA and Baseline on sender and reciever machine. 
+**Important:** Please see [INSTALL.md](./INSTALL.md) for install dependencies and build SwCC and Baseline on sender and reciever machine. 
 **Important:** Please see [DEPLOY.md](./DEPLOY.md) for connecting to our artifact machine and deploying FPGA bitstream on Xilinx U280s.
 
-**Important: The RoCE experiments require MLNX_OFED to be installed, whereas the Soft-RoCE experiments require it to be uninstalled. Therefore, please conduct the SwRDMA and Soft-RoCE experiments on sender0 and receiver0, and perform the RoCE experiments on sender1 and receiver1.**
+**Important: The RoCE experiments require MLNX_OFED to be installed, whereas the Soft-RoCE experiments require it to be uninstalled. Therefore, please conduct the SwCC and Soft-RoCE experiments on sender0 and receiver0, and perform the RoCE experiments on sender1 and receiver1.**
 
 ## 1. Comparison of Control Loop Delay
 
 This is the evalution for fig.7 in the paper.
 
-### 1.1 Run the SwRDMA 
+### 1.1 Run the SwCC 
 
-Program `bistream/SwRDMA-1.bit` to the FPGA on both the sender0 and receiver0, and after reboot the machines, run the following command to start the experiment:
+Program `bistream/SwCC-1.bit` to the FPGA on both the sender0 and receiver0, and after reboot the machines, run the following command to start the experiment:
 
 
 Receiver0(atc@r3):
 ~~~bash
-sudo SwRDMA/build/example/latency_receiver
+sudo SwCC/build/example/latency_receiver
 ~~~
 
 Sender0(atc@r4):
 ~~~bash
-sudo SwRDMA/build/example/latency_sender
+sudo SwCC/build/example/latency_sender
 ~~~
 
 After the receiver0 displays the message:
@@ -107,19 +107,19 @@ On the sender0, the output will be like this:
 
 This is the evalution for fig.10 in the paper.
 
-### 2.1 Run the SwRDMA-1 & SwRDMA-8
+### 2.1 Run the SwCC-1 & SwCC-8
 
-#### 2.1.1 Run the SwRDMA-1
-Program `bistream/SwRDMA-1.bit` to the FPGA on both the sender0 and receiver0, and after reboot the machines, run the following command to start the experiment:
+#### 2.1.1 Run the SwCC-1
+Program `bistream/SwCC-1.bit` to the FPGA on both the sender0 and receiver0, and after reboot the machines, run the following command to start the experiment:
 
 Receiver0(atc@r3):
 ~~~bash
-sudo SwRDMA/build/example/throughput_receiver 64
+sudo SwCC/build/example/throughput_receiver 64
 ~~~
 
 Sender0(atc@r4):
 ~~~bash
-sudo SwRDMA/build/example/throughput_sender 64
+sudo SwCC/build/example/throughput_sender 64
 ~~~
 
 
@@ -148,8 +148,8 @@ speed: 6.06354 Gbps
 
 **Note:** After testing the throughput for one packet size, the receiver needs to press Ctrl+C to terminate the receiver program before initiating the next test.
 
-#### 2.1.2 Run the SwRDMA-8
-Program `bistream/SwRDMA-8.bit` to the FPGA on both the sender0 and receiver0. After rebooting the machines, conduct the SwRDMA-8 experiment following the same procedure used for SwRDMA-1.
+#### 2.1.2 Run the SwCC-8
+Program `bistream/SwCC-8.bit` to the FPGA on both the sender0 and receiver0. After rebooting the machines, conduct the SwCC-8 experiment following the same procedure used for SwCC-1.
 
 
 ### 2.2 Run the RoCE-1 & RoCE-8

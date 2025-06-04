@@ -2,7 +2,7 @@
 
 This document shows all of the essential software installation process on test machine. **We already install all dependencies on our artifact machines.**
 
-**Important: The RoCE experiments require MLNX_OFED to be installed, whereas the Soft-RoCE experiments require it to be uninstalled. Therefore, please conduct the SwRDMA and Soft-RoCE experiments on sender0 and receiver0, and perform the RoCE experiments on sender1 and receiver1.**
+**Important: The RoCE experiments require MLNX_OFED to be installed, whereas the Soft-RoCE experiments require it to be uninstalled. Therefore, please conduct the SwCC and Soft-RoCE experiments on sender0 and receiver0, and perform the RoCE experiments on sender1 and receiver1.**
 
 ## 1. Install QDMA Driver:
 
@@ -47,17 +47,17 @@ We use `sudo dmesg | grep qdma_pf` to check if the QDMA driver is loaded success
 [  194.576282] qdma_pf:qdma_device_open: 0000:1a:00.0, 1a000, pdev 0x0000000055a384ed, xdev 0x0000000036f2e3ee, ch 1, q 0, vf 0.
 ~~~
 
-### 3.2 Build SwRDMA software
+### 3.2 Build SwCC software
 
-Now we create a `SwRDMA/build` directory, and build the SwRDMA software in the `build` directory.
+Now we create a `SwCC/build` directory, and build the SwCC software in the `build` directory.
 ~~~bash
-mkdir SwRDMA/build
-cd SwRDMA/build
+mkdir SwCC/build
+cd SwCC/build
 cmake ..
 make
 ~~~
 
-It should report no error. And we will get the output binary in the `SwRDMA/build/example` directory.
+It should report no error. And we will get the output binary in the `SwCC/build/example` directory.
 
 ### 3.3 Build baseline software
 

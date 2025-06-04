@@ -1,4 +1,4 @@
-# SwRDMA: Enabling Software-Programmable Congestion Control in High-Speed NIC RDMA Engines [ATC2025]
+# SwCC: Software-Programmable and Per-Packet Congestion Control in RDMA Engine [ATC2025]
 
 
 A RDMA Engine that enables oftware-Programmable Congestion Control in High-Speed
@@ -15,7 +15,7 @@ NIC. This is the source code for our ATC'25 paper.
 
 
 ## Install Dependencies and Build
-See [INSTALL.md](./doc/INSTALL.md) for install dependencies and build SwRDMA on a single machine.
+See [INSTALL.md](./doc/INSTALL.md) for install dependencies and build SwCC on a single machine.
 
 ## Connect and Deploy Bitstream
 See [DEPLOY.md](./doc/DEPLOY.md) for connecting to our artifact machine and  deploying FPGA bitstream on Xilinx U280.
@@ -40,5 +40,5 @@ After generating the MEM(.mem) file, we load it into the RISC-V instruction memo
 ├── bitstream (U280 Bitstream)
 ├── doc (User Manual)
 ├── riscv (the CCA code running on RISC-V)
-├── SwRDMA (the source code for SwRDMA experiments)
+├── SwCC (the source code for SwCC experiments)
 ~~~

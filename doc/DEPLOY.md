@@ -71,4 +71,4 @@ Then choose the bitstream file `bitstream/xxxxx.bit` and click `Program`. You do
 
 ### 2.5 Restart sender and recerver machine
 
-After programming the FPGA, you should restart the sender and receiver by typing `sudo reboot` in the terminal. And then you can run the SwRDMA experiment.
+After programming the FPGA, you should restart the sender and receiver by typing `sudo reboot` in the terminal. And then you can run the SwCC experiment.
